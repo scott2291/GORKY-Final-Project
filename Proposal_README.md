@@ -158,3 +158,42 @@ A previous student in the lab found a QTL for high alpha-tomatine content that c
 My files are not tracking at all in my git repo and I have spent quite a long time troubleshooting this issue to no avail. I am going to try to remove my git repo and create a new one, but I am attaching a screenshot below with all of my current commits. None of my files saved to the git remote repo, so I think starting a new git repo may be the easiest way to fix this problem.
 
 Current commits and messages found in `imgs` directory named `previousgitlog.png`.
+
+After a couple hours of troubleshooting, I want to notes on my git issues to refer back to later if similar issues arise. I was working through my local VS code and it is have problems with git repositiories both local and remote. It would not upload my file, not track changes, and there was an H that appeared in front of my files when I used the following command:
+
+```bash
+git ls-files -v
+```
+
+Instead of running all of these tests with my this document, I created a test.md document that I could risk losing any information in. I also used Copilot to help me make sense of the issues and walk me through trouble shooting. This is the summary that Copilot produced of everything we tried:
+
+ Flag Clearing Attempts
+- Ran git update-index --no-assume-unchanged test.md
+- Ran git update-index --no-skip-worktree test.md
+- Verified with git ls-files -v | grep test.md — still showed H
+
+🧨 Index Reset Attempts
+- Ran git rm --cached test.md to untrack
+- Re-added with git add test.md
+- Deleted .git/index and ran git reset
+- Recreated test.md from scratch
+- Renamed the file to a new name (totallynewfile.md) — still showed H
+
+🧪 Environment Isolation
+- Cloned into a fresh repo — H persisted
+- Created a brand-new repo from scratch — H persisted
+- Verified no active Git hooks were interfering
+- Checked .git/hooks/pre-commit.sample — not active, not relevant
+- Confirmed no global Git config or aliases were setting flags
+
+🧱 External Factors Investigated
+- Checked for symbolic links and file attributes (e.g., read-only, hidden)
+- Cleared Windows file attributes with attrib -R -S -H test.md
+- Tried outside VS Code (e.g., Git Bash) — H persisted
+
+Before any of this troubleshooting, I also changed the file permission to allow all to read, write, and execute.
+
+Oddly enough, once I switched to the OSC Ondemand browser version of VS Code, everything is working as expected. I am unsure if this issue, but due to this, I will work within the VS code browser from now on.
+
+
+
