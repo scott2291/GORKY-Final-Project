@@ -20,12 +20,12 @@ The GORKY deletion is a 612bp in length and located on the southern arm of chrom
 
 The following seven reference genomes were previously aligned by the former student who conducted a similar analysis. I plan to use these same genomes for my analysis:
 
-1. Heinz 1706 SL2.5
+1. pected to have GORKY deletion
+    - Used instead of LA2213 (donor parent) because this genome was unavailable Heinz 1706 SL2.5
 2. Heinz 1706 SL3.0
 3. Heinz 1706 SL4.0
 4. EA03058
-    - Expected to have GORKY deletion
-    - Used instead of LA2213 (donor parent) because this genome was unavailable at the time of assembly
+    - Exat the time of assembly
 5. M82
     - similar to processing type donor parent, OH8243
 6. OH8245
@@ -146,7 +146,7 @@ I believe that this procedure could be useful if we choose to sequence the high 
 
 Since these topics are still quite new to me, I want to spend some time trying to understand the tools I will be using. Particularly, I want to focus on `seqkit`, `mafft`, and `Quarto`. 
 
-The part of this process I am the most confused on currently is how I will locate my desired reference genomes. NCBI and the Sol Genomics Network, and the 150 tomato genome ReSequencing project.
+The part of this process I am the most confused on currently is how I will locate my desired reference genomes. NCBI and the Sol Genomics Network, and the 150 tomato genome ReSequencing project have been reccomended to me.
 
 I also am unsure if the R visualization will be suffcient to visualize the output from the `mafft` command, so I may want to use another tool such as BLAST or JBrowse to visualize these sequences in a way that I have seen before.
 
