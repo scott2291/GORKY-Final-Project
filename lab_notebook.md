@@ -62,3 +62,30 @@ Now I am going to make a table specifying the exact region (including a 1.5kb bu
 | LA1416            |                       |
 | Heinz 1706 SL5.0  |                       |
 
+## Reworking the current planned procedure
+
+As I was searching for my FASTA files, I could not find an available FASTA file for EA03058. EA03058 is the bitter accession that in theory should contain the GORKY deletion, so it is in turn the most important accession to have as data. 
+
+I went through several different thought processes to decide how to proceed. 
+    
+    - First, I checked to see if I could identify any additional other bitter accesssion with increased alpha-tomatine that had a publicly available fasta file. From limited searching, I could not find any on Sol Genomics Network (SGN), NCBI, linked resouorces from SGN, or from general google searching,
+
+    - Next, I began exploring if the available VCF files could be converted into FASTA files. From my research, I found that VCF files can be used to create a consensus FASTA file using the VCF file and a reference FASTA file. However, it does not appear to be a typical method used and I am uncomfortable with trying to use a created consensus FASAT file in place of a refereence genome FASTA file.
+
+    - Another possibility is using the VCF files themselves for my deletion detection analysis. The deletion within the EA03058 accession was found in Kazachkova et al. using the 150 resequencing project on SGN, and this dataset was used in the previous student's dissertation. I could try to solely source my information from this dataset to create a more direct comparison to these two studies. 
+
+    - Finally, the option I am most likely moving forward with is to use the fastq files that can be found on on the European Nucleotide Archive (ENA). On the 150 tomato resequencing project on page in SGN, there is a link to the same project information on ENA that contains fastq files for each accession within this project.  I am chosing to move forward with this option because I am more familiar with fastq files than any other file type.   
+
+Currently I am going to move forward with only 5 of my proposed reference genomes. I am doing this to simplify the procedure, but I know I can add more files once I create a proof of concept.
+
+1. All Heinz reference genomes
+    - FASTA type files
+    - Used to align reads
+2. M82 
+    - FASTA type file
+    - Reference genome that is similar to the processing parent, OH8243
+    - Used for aligning reads
+3. EA03058
+    - FASTQ files
+    - Use reads that contain my region of interest
+

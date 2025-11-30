@@ -20,7 +20,7 @@ The GORKY deletion is a 612bp in length and located on the southern arm of chrom
 
 The following seven reference genomes were previously aligned by the former student who conducted a similar analysis. I plan to use these same genomes for my analysis:
 
-1. pected to have GORKY deletion
+1. Expected to have GORKY deletion
     - Used instead of LA2213 (donor parent) because this genome was unavailable Heinz 1706 SL2.5
 2. Heinz 1706 SL3.0
 3. Heinz 1706 SL4.0
