@@ -93,5 +93,82 @@ I am starting by downloading the the 3 available fastq files locally and then tr
 
 In Kazachkova et. al., it is stated that the region that contains GORKY and its homologs is Indel 3-5 (Indel 5 on chromosome 3). I will use the VCF file for EA03058 to extract the bp positioning on chromosome 3. I will then use SeqKit to cut the fasta and fastq file to only the section I am interested in. This will allow me to focus in only my region of interest.
 
+## Working with Files: Data Preparation
 
+The first thing I want to do is use my vcf file to identify indel 5 on chromosome 3.
+
+To complete this, I will need the `bcftools` module. I will first check if the module exists within the installed software. 
+
+I ran the following command:
+
+```bash
+module spider bcftools
+```
+
+The output was:
+
+```bash
+Lmod has detected the following error: 
+Unable to find: "bcftools".
+
+```
+
+I then search "bcftools" on seqera and I found a bioconda container. I want to learn more about the container, so after I save the container as a constant. I ran the following command:
+
+```bash
+apptainer exec "$bcftools" bcftools --help
+```
+The output was
+
+```bash
+INFO:    Downloading oras image
+107.2MiB / 107.2MiB [==========================================] 100 % 29.5 MiB/s 0s
+INFO:    gocryptfs not found, will not be able to use gocryptfs
+
+Program: bcftools (Tools for variant calling and manipulating VCFs and BCFs)
+License: GNU GPLv3+, due to use of the GNU Scientific Library
+Version: 1.22 (using htslib 1.22)
+
+Usage:   bcftools [--version|--version-only] [--help] <command> <argument>
+
+Commands:
+
+ -- Indexing
+    index        index VCF/BCF files
+
+ -- VCF/BCF manipulation
+    annotate     annotate and edit VCF/BCF files
+    concat       concatenate VCF/BCF files from the same set of samples
+    convert      convert VCF/BCF files to different formats and back
+    head         view VCF/BCF file headers
+    isec         intersections of VCF/BCF files
+    merge        merge VCF/BCF files files from non-overlapping sample sets
+    norm         left-align and normalize indels
+    plugin       user-defined plugins
+    query        transform VCF/BCF into user-defined formats
+    reheader     modify VCF/BCF header, change sample names
+    sort         sort VCF/BCF file
+    view         VCF/BCF conversion, view, subset and filter VCF/BCF files
+
+ -- VCF/BCF analysis
+    call         SNP/indel calling
+    consensus    create consensus sequence by applying VCF variants
+    cnv          HMM CNV calling
+    csq          call variation consequences
+    filter       filter VCF/BCF files using fixed thresholds
+    gtcheck      check sample concordance, detect sample swaps and contamination
+    mpileup      multi-way pileup producing genotype likelihoods
+    polysomy     detect number of chromosomal copies
+    roh          identify runs of autozygosity (HMM)
+    stats        produce VCF/BCF stats
+
+ -- Plugins (collection of programs for calling, file manipulation & analysis)
+    41 plugins available, run "bcftools plugin -lv" to see a complete list
+
+ Most commands accept VCF, bgzipped VCF, and BCF with the file type detected
+ automatically even when streaming from a pipe. Indexed VCF and BCF will work
+ in all situations. Un-indexed VCF and BCF and streams will work in most but
+ not all situations.
+
+```
 
