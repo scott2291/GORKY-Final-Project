@@ -4,18 +4,34 @@
 
 1. Download files and transfer via FileZilla
 
-2. Unzip reference genome files
+1. Unzip reference genome files
 
 ```bash
 gunzip -v data/
 
 ```
+1. Prepare VCF file for analysis
 
-3. Set up files paths
+```bash
+# Renaming my file so it does not confuse the script by stating it is double compressed
+mv data/RF_043_SZAXPI009322-102.vcf.gz.snpeff.vcf.gz  data/RF_043_SZAXPI009322-102.snpeff.vcf.gz
+#Load module htslib
+module load htslib/1.20
+# Unzip my VCF file
+gunzip -d data/RF_043_SZAXPI009322-102.snpeff.vcf.gz 
+# Block gunzip my file
+bgzip data/RF_043_SZAXPI009322-102.snpeff.vcf 
+# Create index file
+tabix -p vcf data/RF_043_SZAXPI009322-102.snpeff.vcf.gz 
+
+```
+
+
+1. Set up files paths
 
 ```bash
 #Inputs
-inputvcf=data/RF_043_SZAXPI009322-102.vcf.gz.snpeff.vcf.gz 
+inputvcf=data/RF_043_SZAXPI009322-102.snpeff.vcf.gz 
 ref_heinz=data/fasta/Heinz1706_SL4.0_genomic.fna 
 ref_m82=data/fasta/M82_genomic.fna 
 
