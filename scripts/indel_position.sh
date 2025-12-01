@@ -24,18 +24,17 @@ echo "# Output dir:                      $outdir"
 echo
 
 # Create the output dir with a subdir to store
-mkdir -p "$outdir"/indel_poistion
+mkdir -p "$outdir"indel_position
 
 # Use bcftools to create a new vcf file that only contains indels from chromosome 3
 
-apptainer exec "$bcftools" bcftools view -r chr3 -v indels "$inputvcf" > "$outdir"/indel_position/chr3_indels.vcf
+ apptainer exec "$bcftools" bcftools view -r SL2.50ch03 -v indels "$inputvcf" > "$outdir"indel_position/chr3_indels.vcf
 
 # Extract coordinates of the beginning of indel 5 and the beginning of indel 6
 
-# shellcheck disable=SC2037
-start_pos=$(grep -v "^#" "$outdir"/indel_position/chr3_indels.vcf | sed -n '5p')
-
-end_pos=$(awk '{ref_len=length($4); alt_len=length($5); if(ref_len>alt_len){end=$2+ref_len-alt_len}else{end=$2}')
+start_pos=$(grep -v "^#" "$outdir"indel_position/chr3_indels.vcf | sed -n '5p')
+echo "$start_pos"
+end_pos=$(awk '{ref_len=length($4); alt_len=length($5); if(ref_len>alt_len){end=$2+ref_len-alt_len}else{end=$2}}')
 
 # Print starting and ending position
 
