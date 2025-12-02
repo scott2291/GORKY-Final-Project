@@ -26,7 +26,6 @@ tabix -p vcf data/RF_043_SZAXPI009322-102.snpeff.vcf.gz
 
 ```
 
-
 1. Set up files paths
 
 ```bash
@@ -48,5 +47,10 @@ This will be completed via the `indel_position.sh` script which will take a VCF 
 ```bash
 bash scripts/indel_position.sh "$inputvcf" "$outdir"
 
+```
+## File Preparation: Creating smaller fasta and fastq files
+
+```bash
+bash scripts/seqkit.sh "$ref_heinz" "$ref_m82" data/fasta/
 ```
 

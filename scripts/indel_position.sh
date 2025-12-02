@@ -1,8 +1,4 @@
 #!/bin/bash
-#SBATCH --account=PAS2880
-#SBATCH --cpus-per-task=4
-#SBATCH --mail-type=FAIL
-#SBATCH --output=slurm-fastqc-%j.out
 set -euo pipefail
 
 # Constants
