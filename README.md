@@ -30,6 +30,7 @@ tabix -p vcf data/RF_043_SZAXPI009322-102.snpeff.vcf.gz
 
 ```bash
 #Inputs
+
 inputvcf=data/RF_043_SZAXPI009322-102.snpeff.vcf.gz 
 ref_heinz=data/fasta/Heinz1706_SL4.0_genomic.fna 
 ref_m82=data/fasta/M82_genomic.fna 
@@ -54,5 +55,18 @@ This script will accept both reference genome fasta files and an output director
 
 ```bash
 bash scripts/seqkit.sh "$ref_heinz" "$ref_m82" data/fasta/
+```
+
+## File Preparation: FastQC
+
+This script will run FastQC on all three of my files within my fastq directory by looping over each file within the directory. Each file will represent a separate batch job.
+
+```bash
+for fastq_file in data/fastq/*; do
+    #echo "# Running analysis on $fastq_file"
+    sbatch scripts/fastqc.sh "$fastq_file" "$outdir"
+done
+```
+
 ```
 
