@@ -83,4 +83,11 @@ This document will contain the detailed workflow for this project with a reprodu
 
     - Decide which I like better and use that plot
 
+## Feedback
+
+My `indel_position.sh` script is no longer needed for my workflow because I was able to source the information from my the supplemental information within the Kazachkova et. al. paper. I have not removed this script because I spent a signifincant amount of time on it, and it should help meet the first requirement of this assignment along with the `seqkit.sh` script.
+
+If you want to see any of the troubleshooting that I have underwent so far, I have detailed that information in the `lab_notebook.md` file.
+
+What I want to get feedback on the most, is if this workflow and these functions make sense for what I am trying to achieve. I also am curious if you think it is a good idea to use MultiQC after alignment.  
 
