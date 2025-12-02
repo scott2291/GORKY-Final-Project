@@ -1,11 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name=align_reads
-#SBATCH --output=align_reads.out
 #SBATCH --account=PAS2880
 #SBATCH --cpus-per-task=8
 #SBATCH --time=12:00:00
-#SBATCH --mail-type=FAIL
-#SBATCH --output=slurm-fastqc-%j.out
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --output=slurm-align-%j.out
 set -euo pipefail
 
 # Load Modules
@@ -20,7 +18,7 @@ ref_genome="$1"
 fastq_R1="$2"
 fastq_R2="$3"
 outdir="$4"
-
+file_name=$(basename "$ref_genome")
 # Inital Logging
 
 echo "# Starting script align.sh"
@@ -37,6 +35,7 @@ echo
 # Create an ouput directory for your bam files
 
 mkdir -p "$outdir"aligned
+mkdir -p "$outdir"aligned/logs
 
 # Create an index file for your reference genome
 
@@ -45,12 +44,22 @@ bwa index "$ref_genome"
 # Use bwa to align paired-end reads to the Heinz reference genome and then pipe the command to samtools to name the file
 
 bwa mem -t 8 "$ref_genome" "$fastq_R1" "$fastq_R2" | \
-samtools view -Sb -@ 8> "$outdir"aligned/"$ref_genome".bam
+samtools view -Sb --threads 8 > "$outdir"aligned/"$file_name".bam
+
+# Filter out unmapped reads
+
+samtools view -b -F 4 --threads 8 "$outdir"aligned/"$file_name".bam -o "$outdir"aligned/"$file_name".mapped.bam
 
 # Sort the BAM file for future analysis
 
-samtools sort -@ 8 "$outdir"aligned/"$ref_genome".bam -o "$outdir"aligned/"$ref_genome".sorted.bam
+samtools sort --threads 8 "$outdir"aligned/"$file_name".mapped.bam -o "$outdir"aligned/"$file_name".mapped.sorted.bam
 
 # Create an index for the BAM file
 
-samtools index "$outdir"aligned/"$ref_genome".sorted.bam
+samtools index "$outdir"aligned/"$file_name".mapped.sorted.bam
+
+# Final Logging Statements
+
+echo
+echo "# Successfully finished script align.sh"
+date
