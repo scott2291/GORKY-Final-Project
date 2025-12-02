@@ -479,4 +479,5 @@ I now want to confirm that the proper length of sequence is in each file.
 
 ## File Preparation: FastQC
 
-I noticed that my fastq files that were very large were taking an extremely long time to process. I started looking into alternatives to FastQC and found that fastp will be quicker because is is multi-threaded instead of single-threaded. Fastp will also trim low quality reads
+Due to the size of my fastq files, FastQC took around 15 minutes to complete it's analysis. When observing the analysis, I saw that my `ERR418079_1.fastq.gz` file completely passed quality checks, my `ERR418079_2.fastq.gz` file has some minimal problems in per sequence tile quality (yellow warning) but after observing the visualization created it does not seem to be an overwhelming issue. The `ERR418079.fastq.gz` file failed multiple sections and is signifinicantly smaller than the other two files. There is a metadata spreadsheet that informed me that these Illumina fastq files are paired, so I am assuming that the `ERR418079_1.fastq.gz` and `ERR418079_2.fastq.gz` are my paired files because they are of similar file size and quality.  The FastQC report indicates that I do not need to trim low quality data from these files, so I can move on to the next script.
+

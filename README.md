@@ -68,5 +68,23 @@ for fastq_file in data/fastq/*; do
 done
 ```
 
+## Align Reads
+
+This scripts will take a corrected reference genome file and paired fastq reads as input, and align those reads to the reference genome. It will create BAM files as it's output. Before running the `align.sh` script, we will need to save the new corrected files under input variable names
+
+```bash
+heinz_corrected=data/fasta/region/Heinz1706.2_SL2.50_corrected.fna 
+m82_corrected=data/fasta/region/M82_corrected.fna 
+fastq_1=data/fastq/ERR418079_1.fastq.gz
+fastq_2=data/fastq/ERR418079_2.fastq.gz
+```
+
+The following commands will run the scripts as a slurm batch job:
+
+```bash
+for ref_genome in data/fasta/region/*.fna; do
+    #echo "# Running analysis on: $ref_genome"
+    sbatch scripts/align.sh "$ref_genome" "$fastq_1" "$fastq_2" "$outdir"
+done
 ```
 
