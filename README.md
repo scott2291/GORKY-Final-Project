@@ -48,7 +48,9 @@ This will be completed via the `indel_position.sh` script which will take a VCF 
 bash scripts/indel_position.sh "$inputvcf" "$outdir"
 
 ```
-## File Preparation: Creating smaller fasta and fastq files
+## File Preparation: Creating smaller fasta 
+
+This script will accept both reference genome fasta files and an output directory as inputs and will output fasta files that only contain the regions I am interested in.
 
 ```bash
 bash scripts/seqkit.sh "$ref_heinz" "$ref_m82" data/fasta/
