@@ -4,30 +4,30 @@
 
 ### File Preparation
 
-    - I will start by downloading all of my necessary files: M82 fasta file, Heinz1706 fasta file, EA03058 fastq files, and EA03058 VCF file.
+- I will start by downloading all of my necessary files: M82 fasta file, Heinz1706 fasta file, EA03058 fastq files, and EA03058 VCF file.
 
-    - I also have a setting up section of my README.md that allows establishes my constant variables and prepares my files for manipulation
+- I also have a setting up section of my README.md that allows establishes my constant variables and prepares my files for manipulation
 
 Script 1: `indel_position.sh`
 
-    - this script should give the starting and ending position on chromosome three for my region of interest.
-    - see script for details
+- this script should give the starting and ending position on chromosome three for my region of interest.
+- see script for details
 
 Script 2: `seqkit.sh`
 
-    - this script takes the fasta files, and trims them to only include the region that we are interested in on chromosome 3. The fastq file reads will then only be aligned in the areas that our corrected fasta file has data
+- this script takes the fasta files, and trims them to only include the region that we are interested in on chromosome 3. The fastq file reads will then only be aligned in the areas that our corrected fasta file has data
 
 
 ### Run fastqc
 
 Script 3: `fastqc.sh`
 
-    - this will run fastqc on all the fastq files in the data/fastq directory
-    - slurm bacth job
+- this will run fastqc on all the fastq files in the data/fastq directory
+- slurm bacth job
 
 Script 3b: `trimgalore.sh`
 
-    -this script will be created depending on the quality of the reads as determined by the `fastqc.sh` script
+-this script will be created depending on the quality of the reads as determined by the `fastqc.sh` script
 
 
 ### Align reads to refernce
