@@ -32,7 +32,7 @@ Script 3b: `trimgalore.sh`
 
 ### Align reads to refernce
 
-Script 4: 
+Script 4: `align.sh`
     - uses `bwa` and `samtools` to algin the paired-end reads to the reference genomes
         - `bwa` for the alignment
         - `samtools` for converting the SAM file to a BAM file
@@ -40,7 +40,7 @@ Script 4:
 
 ### Call Variants and Filter for Deletions
 
-Script 4:
+Script 4: `call_and_filter.sh`
     - Uses `bcftools` and `samtools` to generate a pileup and call variants
     - creates an VCF file as the output
     - Uses `bcftools index` the VCF file
@@ -66,5 +66,21 @@ This document will contain the detailed workflow for this project with a reprodu
 
 1. Interpret the FastQC html file to determine whether the fastq files need to be trimmed
     
-    - If they do not meet quality standards
+    - If they do not meet quality standards:
+        - Write `trimgalore.sh` script
+        - Use trimmed fastq reads for the remaining downstream analysis
+
+1. Write the `align.sh` script to align my reads to both of my reference genomes
+
+
+1. Write and troubleshoot the `call_and_filter.sh` script to call the variants within my region of interest, and extract only the deletions present within this region.
+
+1. Check the length of the deletions that you found to verify that one of the deletions is 612bp (the reported length of the GORKY deletion)
+
+    - If no 612bp deletion is present, maybe try comparing the VCF and BAM files that are available from the same database that I sourced the fastq files from (ENA).
+
+1. Use R and Quarto to create a heatmap and a histogram of the deletions
+
+    - Decide which I like better and use that plot
+
 
