@@ -54,7 +54,7 @@ bash scripts/indel_position.sh "$inputvcf" "$outdir"
 This script will accept both reference genome fasta files and an output directory as inputs and will output fasta files that only contain the regions I am interested in.
 
 ```bash
-bash scripts/seqkit.sh "$ref_heinz" "$ref_m82" data/fasta/
+bash scripts/seqkit.sh "$ref_heinz_2" "$ref_m82" data/fasta/
 ```
 
 ## File Preparation: FastQC

@@ -427,3 +427,56 @@ Global Flags:
                                         SEQKIT_THREADS) (default 1)
 
 ```
+
+
+### Troubleshooting
+
+As I was correcting the `seqkit.sh` script, I found that the Heinz 1706 SL4.0 chromosome 3 region was too small compared to the reported regions in Kazachkova et. al. In that paper they use a Heinz 1706 SL2.50, so I am downloading the fasta files for this version of the reference genome, and I am going to check if those files are large enough
+
+Let's find the name of the chromosomes for `Heinz1706.2_SL2.50_genomic.fna` with the following command:
+
+```bash
+apptainer exec oras://community.wave.seqera.io/library/seqkit:2.11.0--b6acc663486362a3 seqkit seq -n data/fasta/Heinz1706.2_SL2.50_genomic.fna | head
+```
+
+The output of this command was:
+
+```bash
+CM001064.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 1, whole genome shotgun sequence
+CM001065.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 2, whole genome shotgun sequence
+CM001066.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 3, whole genome shotgun sequence
+CM001067.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 4, whole genome shotgun sequence
+CM001068.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 5, whole genome shotgun sequence
+CM001069.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 6, whole genome shotgun sequence
+CM001070.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 7, whole genome shotgun sequence
+CM001071.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 8, whole genome shotgun sequence
+CM001072.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 9, whole genome shotgun sequence
+CM001073.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 10, whole genome shotgun sequence
+
+```
+
+From this output I can gather that the name of the chromosome is `CM001066.2`
+
+Let's repeat this command with `Heinz1706.3_SL2.50_genomic.fna`
+
+The output of that command was:
+
+```bash
+NC_015438.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 1, SL2.50, whole genome shotgun sequence
+NC_015439.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 2, SL2.50, whole genome shotgun sequence
+NC_015440.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 3, SL2.50, whole genome shotgun sequence
+NC_015441.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 4, SL2.50, whole genome shotgun sequence
+NC_015442.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 5, SL2.50, whole genome shotgun sequence
+NC_015443.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 6, SL2.50, whole genome shotgun sequence
+NC_015444.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 7, SL2.50, whole genome shotgun sequence
+NC_015445.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 8, SL2.50, whole genome shotgun sequence
+NC_015446.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 9, SL2.50, whole genome shotgun sequence
+NC_015447.2 Solanum lycopersicum cultivar Heinz 1706 chromosome 10, SL2.50, whole genome shotgun sequence
+```
+I used the `Heinz1706.2_SL2.50_genomic.fna` for in the `seqkit.sh` script and the new file populated with the seqeuence data!
+
+I now want to confirm that the proper length of sequence is in each file.
+
+## File Preparation: FastQC
+
+I noticed that my fastq files that were very large were taking an extremely long time to process. I started looking into alternatives to FastQC and found that fastp will be quicker because is is multi-threaded instead of single-threaded. Fastp will also trim low quality reads
