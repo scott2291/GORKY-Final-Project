@@ -88,3 +88,14 @@ for ref_genome in data/fasta/region/*.fna; do
 done
 ```
 
+## Call Variants and Filter for Deletions
+
+This script takes a reference genome, a mapped and sorted BAM file, and an output directory as inputs and will output two vcf files. On file will be filtered to only contain deletions, the other file will contain both insertions and deletions.
+
+```bash
+heinz_ms_bam=results/aligned/Heinz1706.2_SL2.50_corrected.fna.mapped.sorted.bam
+
+bash scripts/call_and_filter.sh "$heinz_corrected" "$heinz_ms_bam" "$outdir"
+
+```
+
