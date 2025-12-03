@@ -19,12 +19,22 @@ gunzip -v data/
 ref_heinz_2=data/fasta/Heinz1706.2_SL2.50_genomic.fna
 ref_heinz_3=data/fasta/Heinz1706.3_SL2.50_genomic.fna
 ref_m82=data/fasta/M82_genomic.fna 
-primer_seq_1=: "CTCATAATACCAAGCTGTTTAAATG"
+primer_seq_1="CTCATAATACCAAGCTGTTTAAATG"
 primer_seq_2="GAGTTTGTTAGATATTTGCATCTATG"
 
 # Output
 
 outdir=results/
+
+```
+
+## File Preparation: Trimming Fasta Files to only include data between primers
+
+```bash
+for ref_genome in data/fasta/*.fna; do
+    #echo "# Running analysis on $ref_genome"
+    sbatch scripts/primer_position.sh "$ref_genome" "$primer_seq_1" "$primer_seq_2" "$outdir"
+done
 
 ```
 
