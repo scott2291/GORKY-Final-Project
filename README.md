@@ -57,6 +57,14 @@ This script will accept both reference genome fasta files and an output director
 bash scripts/seqkit.sh "$ref_heinz_2" "$ref_m82" data/fasta/
 ```
 
+## File Preparation: Creating smaller gff
+
+This script will accept both the input and the output gff files, and output a trimmed gff that only contains the region of interest.
+
+```bash
+bash scripts/gff_trim.sh data/gff/genomic.gff data/gff/Heinz1706.3_trimmed.gff
+```
+
 ## File Preparation: FastQC
 
 This script will run FastQC on all three of my files within my fastq directory by looping over each file within the directory. Each file will represent a separate batch job.
