@@ -18,6 +18,7 @@ gunzip -v data/
 
 ref_heinz_2=data/fasta/Heinz1706.2_SL2.50_genomic.fna
 ref_heinz_3=data/fasta/Heinz1706.3_SL2.50_genomic.fna
+ref_heinz_4=data/fasta/Heinz1706_SL4.0_genomic.fna
 ref_m82=data/fasta/M82_genomic.fna 
 primer_seq_1="CTCATAATACCAAGCTGTTTAAATG"
 primer_seq_2="GAGTTTGTTAGATATTTGCATCTATG"
@@ -29,6 +30,8 @@ outdir=results/
 ```
 
 ## File Preparation: Trimming Fasta Files to only include data between primers
+
+This script will locate the chromosome, type of strand (+/-), start position, and end position of an input primer set.  The inputs to this script include: reference genome (fasta), forward primer sequence, reverse primer sequence, and output directory. The output of this script is a 2 tsv files per reference genome that provides the location and the forward and reverse primers.
 
 ```bash
 for ref_genome in data/fasta/*.fna; do
@@ -45,6 +48,28 @@ This script will accept both reference genome fasta files and an output director
 ```bash
 bash scripts/seqkit.sh "$ref_heinz_2" "$ref_heinz_3" "$ref_m82" data/fasta/
 ```
+
+## File Preparation: Creating a fasta file that only contains one chromosome
+
+This script will accept both reference genome fasta files and an output directory as inputs and will output fasta files that only contain the chromosome that the inputed primers were located on
+
+Before running the script, the names of the chromosome we are interested in must be saved as input variables
+
+```bash
+heinz_2_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.2_SL2.50_genomic.fna.tsv)
+heinz_3_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.3_SL2.50_genomic.fna.tsv)
+heinz_4_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706_SL4.0_genomic.fna.tsv)
+m82_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/M82_genomic.fna.tsv)
+```
+
+Now I can run my desired script:
+
+```bash
+bash scripts/seqkit_chr.sh "$ref_heinz_2" "$ref_heinz_3" "$ref_heinz_4" "$ref_m82" "$heinz_2_chr_name" "$heinz_3_chr_name" "$heinz_4_chr_name" "$m82_chr_name" data/fasta/
+```
+
+
+
 
 ## File Preparation: Creating smaller gff
 
