@@ -36,8 +36,8 @@ mkdir -p "$outdir"primer_region/logs
 
 # Locate primers within the Heinz 1706.2 reference genome using seqkit
 
-apptainer exec "$seqkit" seqkit locate -i -p "$primer1" "$ref_genome" > "$outdir"/primer_region/"$filename".tsv
-apptainer exec "$seqkit" seqkit locate -i -p "$primer2" "$ref_genome" > "$outdir"/primer_region/"$filename".tsv
+apptainer exec "$seqkit" seqkit locate -i -p "$primer1" "$ref_genome" > "$outdir"/primer_region/"$filename"_forward.tsv
+apptainer exec "$seqkit" seqkit locate -i -p "$primer2" "$ref_genome" > "$outdir"/primer_region/"$filename"_reverse.tsv
 
 
 echo
