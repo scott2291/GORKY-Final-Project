@@ -3,6 +3,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mail-type=FAIL
 #SBATCH --output=slurm-fastqc-%j.out
+set -euo pipefail
 
 # Load the OSC module for FastQC
 
