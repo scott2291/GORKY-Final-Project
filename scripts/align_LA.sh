@@ -44,22 +44,22 @@ bwa index "$ref_genome"
 # Use bwa to align paired-end reads to the Heinz reference genome and then pipe the command to samtools to name the file
 
 bwa mem -t 8 "$ref_genome" "$fastq_R1" "$fastq_R2" | \
-samtools view -Sb --threads 8 > "$outdir"aligned/"$file_name".bam
+samtools view -Sb --threads 8 > "$outdir"aligned/"$file_name"_LA.bam
 
 # Filter out unmapped reads
 
-samtools view -b -F 4 --threads 8 "$outdir"aligned/"$file_name"_LA.bam -o "$outdir"aligned/"$file_name".mapped.bam
+samtools view -b -F 4 --threads 8 "$outdir"aligned/"$file_name"_LA.bam -o "$outdir"aligned/"$file_name"_LA.mapped.bam
 
 # Sort the BAM file for future analysis
 
-samtools sort --threads 8 "$outdir"aligned/"$file_name".mapped.bam -o "$outdir"aligned/"$file_name_".mapped.sorted.bam
+samtools sort --threads 8 "$outdir"aligned/"$file_name"_LA.mapped.bam -o "$outdir"aligned/"$file_name"_LA.mapped.sorted.bam
 
 # Create an index for the BAM file
 
-samtools index "$outdir"aligned/"$file_name".mapped.sorted.bam
+samtools index "$outdir"aligned/"$file_name"_LA.mapped.sorted.bam
 
 # Final Logging Statements
 
 echo
-echo "# Successfully finished script align.sh"
+echo "# Successfully finished script align_LA.sh"
 date

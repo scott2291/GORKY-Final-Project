@@ -29,7 +29,7 @@ outdir=results/
 
 ```
 
-## File Preparation: Trimming Fasta Files to only include data between primers
+## File Preparation:  Find the primer positions within each reference genome
 
 This script will locate the chromosome, type of strand (+/-), start position, and end position of an input primer set.  The inputs to this script include: reference genome (fasta), forward primer sequence, reverse primer sequence, and output directory. The output of this script is a 2 tsv files per reference genome that provides the location and the forward and reverse primers.
 
@@ -56,10 +56,11 @@ This script will accept both reference genome fasta files and an output director
 Before running the script, the names of the chromosome we are interested in must be saved as input variables
 
 ```bash
-heinz_2_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.2_SL2.50_genomic.fna.tsv)
-heinz_3_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.3_SL2.50_genomic.fna.tsv)
-heinz_4_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706_SL4.0_genomic.fna.tsv)
-m82_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/M82_genomic.fna.tsv)
+heinz_2_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.2_SL2.50_genomic.fna_forward.tsv)
+heinz_3_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.3_SL2.50_genomic.fna_forward.tsv)
+heinz_4_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706_SL4.0_genomic.fna_forward.tsv)
+m82_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/M82_genomic.fna_forward.tsv)
+
 ```
 
 Now I can run my desired script:
@@ -69,14 +70,25 @@ bash scripts/seqkit_chr.sh "$ref_heinz_2" "$ref_heinz_3" "$ref_heinz_4" "$ref_m8
 ```
 
 
-
-
 ## File Preparation: Creating smaller gff
 
 This script will accept both the input and the output gff files, and output a trimmed gff that only contains the region of interest.
 
 ```bash
 bash scripts/gff_trim.sh data/gff/genomic.gff data/gff/Heinz1706.3_trimmed.gff
+```
+
+## File Preparation: Creating a GFF file that only contains our chromosome of interest
+
+This script will accept both the input and the output gff files, and output a trimmed gff that only contains the chromosome of interest.
+
+```bash
+for ref_genome in data/fasta/*.fna; do
+    #echo "# Running analysis on $ref_genome"
+    sbatch scripts/primer_position.sh "$ref_genome" "$primer_seq_1" "$primer_seq_2" "$outdir"
+done
+
+
 ```
 
 ## File Preparation: FastQC
@@ -98,17 +110,42 @@ This scripts will take a corrected reference genome file and paired fastq reads 
 heinz_corrected_2=data/fasta/region/Heinz1706.2_SL2.50_corrected.fna 
 heinz_corrected_3=data/fasta/region/Heinz1706.3_SL2.50_corrected.fna
 m82_corrected=data/fasta/region/M82_corrected.fna 
-fastq_1=data/fastq/ERR418079_1.fastq.gz
-fastq_2=data/fastq/ERR418079_2.fastq.gz
+fastq_EA_1=data/fastq/ERR418079_EA_1.fastq.gz
+fastq_EA_2=data/fastq/ERR418079_EA_2.fastq.gz
+fastq_LA_1=data/fastq/ERR11752506_1.fastq.gz
+fastq_LA_2=data/fastq/ERR11752506_2.fastq.gz
 ```
 
+I also will save our full chromosome fasta files as variables to align those sequences
+
+```bash
+heinz_2_chr_fasta=data/fasta/fasta_chromosome/Heinz1706.2_SL2.50_CM001066.2.fna
+heinz_3_chr_fasta=data/fasta/fasta_chromosome/Heinz1706.3_SL2.50_NC_015440.2.fna
+heinz_4_chr_fasta=data/fasta/fasta_chromosome/Heinz1706_SL4.0_CM001066.4.fna
+m82_chr_fasta=data/fasta/fasta_chromosome/M82_CM079137.1.fna
+```
+
+
 The following commands will run the scripts as a slurm batch job:
+
+This code chunk is for running LA1416 reads
+
+```bash
+for ref_genome in data/fasta/fasta_chromosome/*.fna; do
+    #echo "# Running analysis on: $ref_genome"
+    sbatch scripts/align_LA.sh "$ref_genome" "$fastq_LA_1" "$fastq_LA_2" "$outdir"
+done
+```
+
+
+The following chunk will run the `align.sh` script as a slurm batch job over each of full chromosome fasta files for EA03058 files:
 
 ```bash
 for ref_genome in data/fasta/region/*.fna; do
     #echo "# Running analysis on: $ref_genome"
-    sbatch scripts/align.sh "$ref_genome" "$fastq_1" "$fastq_2" "$outdir"
+    sbatch scripts/align.sh "$ref_genome" "$fastq_EA_1" "$fastq_EA_2" "$outdir"
 done
+
 ```
 
 ```bash
