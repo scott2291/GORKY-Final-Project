@@ -1,9 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+# Load Module
+
+module load samtools/1.21
+
 # Constants
 
 seqkit=oras://community.wave.seqera.io/library/seqkit:2.11.0--b6acc663486362a3
+
 
 # Input variables
 
@@ -48,17 +53,33 @@ mkdir -p "$outdir"fasta_chromosome
 
 apptainer exec "$seqkit" seqkit grep -p "$heinz_2_chr_name"  "$ref_heinz_2" > "$outdir"fasta_chromosome/Heinz1706.2_SL2.50_"$heinz_2_chr_name".fna
 
+# Create a index of the new fasta file for Heinz 1706.2 SL2.50 Ref Genome
+
+samtools faidx "$outdir"fasta_chromosome/Heinz1706.2_SL2.50_"$heinz_2_chr_name".fna
+
 # Use seqkit to create a new file that only contains the specified region for Heinz 1706.3 SL2.50 Ref Genome
 
 apptainer exec "$seqkit" seqkit grep -p "$heinz_3_chr_name"  "$ref_heinz_3" > "$outdir"fasta_chromosome/Heinz1706.3_SL2.50_"$heinz_3_chr_name".fna
+
+# Create a index of the new fasta file for Heinz 1706.3 SL2.50 Ref Genome
+
+samtools faidx "$outdir"fasta_chromosome/Heinz1706.3_SL2.50_"$heinz_3_chr_name".fna
 
 # Use seqkit to create a new file that only contains the specified region for Heinz 1706 SL4.0 Ref Genome
 
 apptainer exec "$seqkit" seqkit grep -p "$heinz_4_chr_name"  "$ref_heinz_4" > "$outdir"fasta_chromosome/Heinz1706_SL4.0_"$heinz_4_chr_name".fna
 
+# Create a index of the new fasta file for Heinz 1706 SL4.0 Ref Genome
+
+samtools faidx "$outdir"fasta_chromosome/Heinz1706_SL4.0_"$heinz_4_chr_name".fna
+
 # Use seqkit to create a new file that only contains the specified region for M82 Ref Genome
 
 apptainer exec "$seqkit" seqkit grep -p "$m82_chr_name"  "$ref_m82" > "$outdir"fasta_chromosome/M82_"$m82_chr_name".fna
+
+# Create a index of the new fasta file for M82 Ref Genome
+
+samtools faidx "$outdir"fasta_chromosome/M82_"$m82_chr_name".fna
 
 # Final logging
 
