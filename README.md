@@ -132,9 +132,10 @@ This code chunk is for running LA1416 reads
 
 ```bash
 for ref_genome in data/fasta/fasta_chromosome/*.fna; do
-    #echo "# Running analysis on: $ref_genome"
+      #echo "# Running analysis on: $ref_genome"
     sbatch scripts/align_LA.sh "$ref_genome" "$fastq_LA_1" "$fastq_LA_2" "$outdir"
 done
+
 ```
 
 

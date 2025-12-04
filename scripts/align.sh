@@ -19,17 +19,18 @@ fastq_R1="$2"
 fastq_R2="$3"
 outdir="$4"
 file_name=$(basename "$ref_genome")
+
 # Inital Logging
 
 echo "# Starting script align.sh"
 date
-echo "# Input Heinz 1706 Ref Genome:            $ref_genome"
+echo "# Input Heinz 1706 Ref Genome:        $ref_genome"
 echo
 echo "# Input Fastq R1 file:               $fastq_R1"
 echo
 echo "# Input Fastq R2 file:                $fastq_R2"
 echo
-echo "# Output dir:                      $outdir"
+echo "# Output dir:                          $outdir"
 echo
 
 # Create an ouput directory for your bam files
@@ -39,7 +40,7 @@ mkdir -p "$outdir"aligned/logs
 
 # Create an index file for your reference genome
 
-bwa index "$ref_genome"
+#bwa index "$ref_genome"
 
 # Use bwa to align paired-end reads to the Heinz reference genome and then pipe the command to samtools to name the file
 

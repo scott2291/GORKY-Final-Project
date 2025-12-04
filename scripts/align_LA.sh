@@ -19,9 +19,10 @@ fastq_R1="$2"
 fastq_R2="$3"
 outdir="$4"
 file_name=$(basename "$ref_genome")
+
 # Inital Logging
 
-echo "# Starting script align.sh"
+echo "# Starting script align_LA.sh"
 date
 echo "# Input Heinz 1706 Ref Genome:            $ref_genome"
 echo
