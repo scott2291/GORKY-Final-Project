@@ -4,6 +4,21 @@
 
 1. Download files and transfer via FileZilla
 
+Fastq files from the 150 tomato resequencing project
+
+```bash
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR418/ERR418079/ERR418079_1.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR418/ERR418079/ERR418079_2.fastq.gz
+
+```
+Fasta files from NCBI
+
+```
+# this is not working yet
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.5_SL4.0/GCA_000188115.5_SL4.0_genomic.fna.gz > data/fasta/GCA_000188115.5_SL4.0.fna.gz
+```
+
+
 1. Unzip reference genome files
 
 ```bash
@@ -20,8 +35,13 @@ ref_heinz_2=data/fasta/Heinz1706.2_SL2.50_genomic.fna
 ref_heinz_3=data/fasta/Heinz1706.3_SL2.50_genomic.fna
 ref_heinz_4=data/fasta/Heinz1706_SL4.0_genomic.fna
 ref_m82=data/fasta/M82_genomic.fna 
+fastq_EA_1=data/fastq/ERR418079_EA_1.fastq.gz
+fastq_EA_2=data/fastq/ERR418079_EA_2.fastq.gz
+fastq_LA_1=data/fastq/ERR11752506_1.fastq.gz
+fastq_LA_2=data/fastq/ERR11752506_2.fastq.gz
 primer_seq_1="CTCATAATACCAAGCTGTTTAAATG"
 primer_seq_2="GAGTTTGTTAGATATTTGCATCTATG"
+heinz_2_gff=data/gff/Heinz_1706.3_SL2.50_genomic.gff
 
 # Output
 
@@ -78,6 +98,10 @@ This script will accept both the input and the output gff files, and output a tr
 bash scripts/gff_trim.sh data/gff/genomic.gff data/gff/Heinz1706.3_trimmed.gff
 ```
 
+```bash
+bash scripts/gff_trim_chr.sh "$heinz_2_gff" "$heinz_3_chr_name"
+```
+
 ## File Preparation: Creating a GFF file that only contains our chromosome of interest
 
 This script will accept both the input and the output gff files, and output a trimmed gff that only contains the chromosome of interest.
@@ -106,17 +130,10 @@ done
 
 This scripts will take a corrected reference genome file and paired fastq reads as input, and align those reads to the reference genome. It will create BAM files as it's output. Before running the `align.sh` script, we will need to save the new corrected files under input variable names
 
-```bash
-heinz_corrected_2=data/fasta/region/Heinz1706.2_SL2.50_corrected.fna 
-heinz_corrected_3=data/fasta/region/Heinz1706.3_SL2.50_corrected.fna
-m82_corrected=data/fasta/region/M82_corrected.fna 
-fastq_EA_1=data/fastq/ERR418079_EA_1.fastq.gz
-fastq_EA_2=data/fastq/ERR418079_EA_2.fastq.gz
-fastq_LA_1=data/fastq/ERR11752506_1.fastq.gz
-fastq_LA_2=data/fastq/ERR11752506_2.fastq.gz
-```
-
 I also will save our full chromosome fasta files as variables to align those sequences
+
+
+You might not need the following code chunk
 
 ```bash
 heinz_2_chr_fasta=data/fasta/fasta_chromosome/Heinz1706.2_SL2.50_CM001066.2.fna
@@ -147,10 +164,6 @@ for ref_genome in data/fasta/region/*.fna; do
     sbatch scripts/align.sh "$ref_genome" "$fastq_EA_1" "$fastq_EA_2" "$outdir"
 done
 
-```
-
-```bash
-sbatch scripts/align.sh "$heinz_corrected_3" "$fastq_1" "$fastq_2" "$outdir"
 ```
 
 ## Call Variants and Filter for Deletions
