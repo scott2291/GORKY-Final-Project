@@ -104,7 +104,7 @@ bash scripts/gff_trim_chr.sh "$heinz_2_gff" "$heinz_3_chr_name"
 ```
 
 ## File Preparation: Creating a GFF file that only contains our chromosome of interest
-
+  
 This script will convert my trimmed gff file to a gff3 file type.
 
 ```bash
@@ -169,7 +169,7 @@ done
 ## MultiQC to Gauge the Quality of my Read Alignments
 
 ```bash
-sbatch scripts/multiqc.sh "$outdir"/aligned/mapped+sorted "$outdir"
+sbatch scripts/multiqc.sh "$outdir"aligned/mapped+sorted "$outdir"
 ```
 
 ## Call Variants and Filter for Deletions
