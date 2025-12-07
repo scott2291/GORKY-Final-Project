@@ -24,26 +24,27 @@ echo
 echo "# File basename:              $filename"
 
 # Sort gff file
-
-apptainer exec "$gffread" gffread "$input_gff" -E --sort-by -o data/gff/trimmed/"$filename".gff3
-
+ 
+apptainer exec "$gffread" gffread "$input_gff" -E \
+-o - | awk 'BEGIN{fasta=0} /^##FASTA/{fasta=1} fasta==0{print $0}' > data/gff/trimmed/"$filename".gff3
 
 # Strict sort for tabix: keep headers first, then sort features
 
+{
+  grep '^#' "data/gff/trimmed/${filename}.gff3"
+  grep -v '^#' "data/gff/trimmed/${filename}.gff3" \
+    | LC_ALL=C sort -t $'\t' -k1,1 -k4,4n -k5,5n
+} > "data/gff/trimmed/${filename}.sorted.gff3"
 
-awk -F'\t' 'BEGIN{OFS="\t"} /^#/ {print; next} {print}' "data/gff/trimmed/${filename}.gff3" \
-  | sort -k1,1 -k4,4n \
-  > "data/gff/trimmed/${filename}.sorted.gff3"
 
 # Compressing and index the file for JBrowse use
 
 bgzip -@ 4 -c data/gff/trimmed/"$filename".sorted.gff3 > data/gff/trimmed/"$filename".sorted.gff3.bgz
 
-tabix -p gff data/gff/trimmed/"$filename".sorted.gff3.bgz
-
+tabix -f -p gff "data/gff/trimmed/${filename}.sorted.gff3.bgz"
 # Final logging
 echo
 echo "# Used gffread version:"
 apptainer exec "$gffread" gffread --version
-echo "# Successfully finished script indel_position.sh"
+echo "# Successfully finished script gff_to_gff3.sh"
 date
