@@ -15,6 +15,7 @@ Fasta files from NCBI
 
 ```
 # this is not working yet
+# This works but it is putting the files in the working dir instead of where it is specified
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.5_SL4.0/GCA_000188115.5_SL4.0_genomic.fna.gz > data/fasta/GCA_000188115.5_SL4.0.fna.gz
 ```
 
@@ -104,16 +105,15 @@ bash scripts/gff_trim_chr.sh "$heinz_2_gff" "$heinz_3_chr_name"
 
 ## File Preparation: Creating a GFF file that only contains our chromosome of interest
 
-This script will accept both the input and the output gff files, and output a trimmed gff that only contains the chromosome of interest.
+This script will convert my trimmed gff file to a gff3 file type.
 
 ```bash
-for ref_genome in data/fasta/*.fna; do
-    #echo "# Running analysis on $ref_genome"
-    sbatch scripts/primer_position.sh "$ref_genome" "$primer_seq_1" "$primer_seq_2" "$outdir"
-done
-
+gff_chr3=data/gff/trimmed/Heinz_1706.3_SL2.50_genomic.gff_NC_015440.2.gff
+bash scripts/gff_to_gff3.sh "$gff_chr3"
 
 ```
+
+
 
 ## File Preparation: FastQC
 
@@ -164,6 +164,12 @@ for ref_genome in data/fasta/region/*.fna; do
     sbatch scripts/align.sh "$ref_genome" "$fastq_EA_1" "$fastq_EA_2" "$outdir"
 done
 
+```
+
+## MultiQC to Gauge the Quality of my Read Alignments
+
+```bash
+sbatch scripts/multiqc.sh "$outdir"/aligned/mapped+sorted "$outdir"
 ```
 
 ## Call Variants and Filter for Deletions
