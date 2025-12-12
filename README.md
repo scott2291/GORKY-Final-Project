@@ -2,23 +2,117 @@
 
 ## Setting up
 
-1. Download files and transfer via FileZilla
+Prior to beginning this procedure, ensure that the working directory is set to `fp_gorky/`.
 
-Fastq files from the 150 tomato resequencing project
+Before beginning the file download portion of this protocol, I must make a `data` and `results` directory
 
 ```bash
+mkdir -p  data
+mkdir -p results
+```
+
+1. Download files and transfer them to the `data` directory
+
+EA03058 FASTQ files are sourced from the 150 tomato resequencing project. The LA1416 FASTQ files are sourced from the
+
+```bash
+
+# Make fastq subdirectory
+
+mkdir -p data/fastq
+
+# EA03058 FASTQ R1 file
+
 wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR418/ERR418079/ERR418079_1.fastq.gz
+
+# Move file to data dir
+
+mv ERR418079_1.fastq.gz fp_gorky/data/fastq/ERR418079_EA_1.fastq.gz
+
+# EA03058 FASTQ R2 file
+
 wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR418/ERR418079/ERR418079_2.fastq.gz
 
-```
-Fasta files from NCBI
+# Move and rename file to data dir
 
-```
-# this is not working yet
-# This works but it is putting the files in the working dir instead of where it is specified
-wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.5_SL4.0/GCA_000188115.5_SL4.0_genomic.fna.gz > data/fasta/GCA_000188115.5_SL4.0.fna.gz
+mv ERR418079_2.fastq.gz data/fastq/ERR418079_EA_2.fastq.gz
 ```
 
+The LA1416 FASTQ files are sourced from the NCBI SRA. To downlaod these paired-end FASTQ files, I will need to run the `sra-download.sh` script.
+
+```bash
+bash scripts/sra-download.sh
+
+```
+
+All the reference Fasta files from NCBI
+
+```bash
+
+# Make fasta subdirectory
+
+mkdir -p data/fasta
+
+# Download Heinz SL4.0
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.5_SL4.0/GCA_000188115.5_SL4.0_genomic.fna.gz 
+
+# move and rename the ref genome
+
+mv GCA_000188115.5_SL4.0_genomic.fna.gz data/fasta/Heinz1706_SL4.0_genomic.fna.gz
+
+# Download Heinz 1706 SL2.50
+
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/188/115/GCF_000188115.3_SL2.50/GCF_000188115.3_SL2.50_genomic.fna.gz 
+
+# Move and rename the ref genome
+
+ mv GCF_000188115.3_SL2.50_genomic.fna.gz data/fasta/Heinz1706.3_SL2.50_genomic.fna.gz
+
+# Download M82 Reference Genome
+
+wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/143/505/GCA_040143505.1_ASM4014350v1/GCA_040143505.1_ASM4014350v1_genomic.fna.gz
+
+# Move and rename the ref genome
+
+mv GCA_040143505.1_ASM4014350v1_genomic.fna.gz data/fasta/M82_genomic.fna
+
+```
+
+Download the GFF and GBFF Files
+
+```bash
+
+# Make gbff and gff subdirectories
+
+mkdir -p data/gff
+mkdir -p data/gbff
+
+# Download Heinz 1706 SL4.0 gbff
+
+wget -nc https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.5_SL4.0/GCA_000188115.5_SL4.0_genomic.gbff.gz 
+
+# Move and rename the gbff file
+
+mv GCA_000188115.5_SL4.0_genomic.gbff.gz  
+ data/gbff/Heinz1706_SL4.0_genomic.gbff.gz
+
+# Download the Heinz1706 SL2.50 gff
+
+wget -nc https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/188/115/GCF_000188115.3_SL2.50/GCF_000188115.3_SL2.50_genomic.gff.gz
+
+# Move and rename gff file
+
+mv GCF_000188115.3_SL2.50_genomic.gff.gz data/gff/Heinz1706.3_SL2.50_genomic.gff.gz
+
+# Download the M82 gbff
+
+wget -nc https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/143/505/GCA_040143505.1_ASM4014350v1/GCA_040143505.1_ASM4014350v1_genomic.gbff.gz
+
+# Move and rename the M82 gbff file
+
+mv GCA_040143505.1_ASM4014350v1_genomic.gbff.gz data/gbff/M82_genomic.gbff.gz
+
+```
 
 1. Unzip reference genome files
 
@@ -60,14 +154,6 @@ for ref_genome in data/fasta/*.fna; do
     sbatch scripts/primer_position.sh "$ref_genome" "$primer_seq_1" "$primer_seq_2" "$outdir"
 done
 
-```
-
-## File Preparation: Creating smaller fasta 
-
-This script will accept both reference genome fasta files and an output directory as inputs and will output fasta files that only contain the regions I am interested in.
-
-```bash
-bash scripts/seqkit.sh "$ref_heinz_2" "$ref_heinz_3" "$ref_m82" data/fasta/
 ```
 
 ## File Preparation: Creating a fasta file that only contains one chromosome
