@@ -78,7 +78,7 @@ mv GCA_040143505.1_ASM4014350v1_genomic.fna.gz data/fasta/M82_genomic.fna
 
 ```
 
-Download the GFF and GBFF Files
+Download the corresponding gff and gbff files from the same ftp page from NCBI that I retrieved links to download the reference genome FASTA files
 
 ```bash
 
@@ -96,6 +96,10 @@ wget -nc https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.
 mv GCA_000188115.5_SL4.0_genomic.gbff.gz  
  data/gbff/Heinz1706_SL4.0_genomic.gbff.gz
 
+# Unzip gbff file
+
+gunzip data/gbff/Heinz1706_SL4.0_genomic.gbff.gz
+
 # Download the Heinz1706 SL2.50 gff
 
 wget -nc https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/188/115/GCF_000188115.3_SL2.50/GCF_000188115.3_SL2.50_genomic.gff.gz
@@ -111,6 +115,10 @@ wget -nc https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/143/505/GCA_040143505.
 # Move and rename the M82 gbff file
 
 mv GCA_040143505.1_ASM4014350v1_genomic.gbff.gz data/gbff/M82_genomic.gbff.gz
+
+# Unzip gbff file 
+
+gunzip data/gbff/M82_genomic.gbff.gz
 
 ```
 
@@ -137,6 +145,8 @@ fastq_LA_2=data/fastq/ERR11752506_2.fastq.gz
 primer_seq_1="CTCATAATACCAAGCTGTTTAAATG"
 primer_seq_2="GAGTTTGTTAGATATTTGCATCTATG"
 heinz_2_gff=data/gff/Heinz_1706.3_SL2.50_genomic.gff
+heinz_4_gbff=data/gbff/Heinz_1706_SL4.0_genomic.gbff.gz
+m82_gbff=data/gbff/M82_genomic.gbff.gz
 
 # Output
 
@@ -175,7 +185,16 @@ Now I can run my desired script:
 ```bash
 bash scripts/seqkit_chr.sh "$ref_heinz_2" "$ref_heinz_3" "$ref_heinz_4" "$ref_m82" "$heinz_2_chr_name" "$heinz_3_chr_name" "$heinz_4_chr_name" "$m82_chr_name" data/fasta/
 ```
+## File Preparation: Extracting a gff3 file from a gbff file
 
+The purpose of this script is to extract a gff3 file from the gbff files
+
+```bash
+for gbff_file in data/gbff/*; do
+    #echo " # Running analysis on: $gbff_file"
+    bash scripts/gbff_to_gff.sh "$gbff_file"
+done
+```
 
 ## File Preparation: Creating smaller gff
 
@@ -198,7 +217,6 @@ gff_chr3=data/gff/trimmed/Heinz_1706.3_SL2.50_genomic.gff_NC_015440.2.gff
 bash scripts/gff_to_gff3.sh "$gff_chr3"
 
 ```
-
 
 
 ## File Preparation: FastQC
