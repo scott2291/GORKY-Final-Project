@@ -1,4 +1,7 @@
 #!/bin/bash
+#SBATCH --account=PAS2880
+#SBATCH --mail-type=FAIL
+#SBATCH --output=slurm-vcf-%j.out
 set -euo pipefail
 
 # Load Modules
@@ -19,7 +22,7 @@ file_name=$(basename "$ref_genome")
 
 # Initial Logging
 
-echo "# Starting script call_and_filter.sh"
+echo "# Starting script vcf.sh"
 date
 echo "# Input Reference Genome:                      $ref_genome"
 echo
@@ -28,9 +31,10 @@ echo
 echo "# Output dir:                      $outdir"
 echo
 
-# Create the output for vcf 
+# Create the output for vcf and logs
 
 mkdir -p "$outdir"vcf
+mkdir -p "$outdir"vcf/logs
 
 # Generate a multiway pileup that pipes into a line responsible for variant calling
 
@@ -41,14 +45,10 @@ apptainer exec "$bcftools" bcftools call -mv -Oz -o "$outdir"vcf/"$file_name".vc
 
 apptainer exec "$bcftools" bcftools index "$outdir"vcf/"$file_name".vcf.gz
 
-# Filter VCF file so it contains only deletions
-
-apptainer exec "$bcftools" bcftools view -i "del" "$outdir"vcf/"$file_name".vcf.gz > "$outdir"vcf/"$file_name"_deletions.vcf.gz
-
 # Final logging
 
 echo
 echo "# Used bcftools version:"
 apptainer exec "$bcftools" bcftools --version
-echo "# Successfully finished script call_and_filter.sh"
+echo "# Successfully finished script vcf.sh"
 date
