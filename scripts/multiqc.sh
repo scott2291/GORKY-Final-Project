@@ -32,16 +32,17 @@ echo
 mkdir -p "$outdir"multiqc/logs
 mkdir -p "$outdir"multiqc/stats
 
-# Generate stats for BAM 
+# Generate stats for MultiQC
 
-#for input_file in "$input"/*.bam; do
-  #  filename=$(basename "$input_file")
-   # echo " # Running Analysis on $input_file"
-    #echo " # File basename  $filename"
-    #samtools stats "$input_file" > "$outdir"multiqc/stats/"$filename".stats
-    #samtools flagstat "$input_file" > "$outdir"multiqc/stats/"$filename".flagstat
-    #samtools  idxstats "$input_file".bai > "$outdir"multiqc/stats/"$filename".idxstats
-#done
+for input_file in "$input"/*.bam; do
+    filename=$(basename "$input_file")
+    echo " # Running Analysis on $input_file"
+    echo " # File basename  $filename"
+    samtools stats "$input_file" > "$outdir"multiqc/stats/"$filename".stats
+    samtools flagstat "$input_file" > "$outdir"multiqc/stats/"$filename".flagstat
+    samtools  idxstats "$input_file".bai > "$outdir"multiqc/stats/"$filename".idxstats
+done
+
 # Run MultiQC
 
 apptainer exec "$multiqc" multiqc --outdir "$outdir"multiqc "$outdir"multiqc/stats/

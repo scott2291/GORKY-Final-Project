@@ -9,7 +9,6 @@ module load samtools/1.21
 
 seqkit=oras://community.wave.seqera.io/library/seqkit:2.11.0--b6acc663486362a3
 
-
 # Input variables
 
 ref_heinz_2="$1"

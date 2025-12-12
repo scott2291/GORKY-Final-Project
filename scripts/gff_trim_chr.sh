@@ -26,7 +26,6 @@ mkdir -p data/gff/trimmed
 
 # Trim the GFF file to only include chromosome 3 using awk
 
-
 apptainer exec "$gffread" gffread "$input_gff" -o- \
   | awk -v c="$chr_name" '
       BEGIN { FS="\t"; fasta=0 }

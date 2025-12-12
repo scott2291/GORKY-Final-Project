@@ -23,7 +23,7 @@ echo "# Input file:                      $input_gff"
 echo 
 echo "# File basename:              $filename"
 
-# Sort gff file
+# Convert gff file to gff3
  
 apptainer exec "$gffread" gffread "$input_gff" -E \
 -o - | awk 'BEGIN{fasta=0} /^##FASTA/{fasta=1} fasta==0{print $0}' > data/gff/trimmed/"$filename".gff3
@@ -42,6 +42,7 @@ apptainer exec "$gffread" gffread "$input_gff" -E \
 bgzip -@ 4 -c data/gff/trimmed/"$filename".sorted.gff3 > data/gff/trimmed/"$filename".sorted.gff3.bgz
 
 tabix -f -p gff "data/gff/trimmed/${filename}.sorted.gff3.bgz"
+
 # Final logging
 echo
 echo "# Used gffread version:"
