@@ -11,12 +11,11 @@ mkdir -p  data
 mkdir -p results
 ```
 
-1. Download files and transfer them to the `data` directory
+### Download files and transfer them to the `data` directory
 
-EA03058 FASTQ files are sourced from the 150 tomato resequencing project. The LA1416 FASTQ files are sourced from the
+The *EA03058* FASTQ files are sourced from the **150 tomato resequencing project** and will be downloaded through the following code block
 
 ```bash
-
 # Make fastq subdirectory
 
 mkdir -p data/fastq
@@ -38,25 +37,24 @@ wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR418/ERR418079/ERR418079_2.fastq.g
 mv ERR418079_2.fastq.gz data/fastq/ERR418079_EA_2.fastq.gz
 ```
 
-The LA1416 FASTQ files are sourced from the NCBI SRA. To downlaod these paired-end FASTQ files, I will need to run the `sra-download.sh` script.
+The *LA1416* FASTQ files are sourced from the **NCBI SRA**. To downlaod these paired-end FASTQ files, I will need to run the `sra-download.sh` script.
 
 ```bash
 bash scripts/sra-download.sh
-
 ```
 
-All the reference Fasta files from NCBI
+All the reference FASTA files are sourced from **NCBI**. I will use `wget` and the **ftp** links page to download these files
 
 ```bash
-
 # Make fasta subdirectory
 
 mkdir -p data/fasta
 
 # Download Heinz SL4.0
+
 wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/188/115/GCA_000188115.5_SL4.0/GCA_000188115.5_SL4.0_genomic.fna.gz 
 
-# move and rename the ref genome
+# Move and rename the ref genome
 
 mv GCA_000188115.5_SL4.0_genomic.fna.gz data/fasta/Heinz1706_SL4.0_genomic.fna.gz
 
@@ -75,13 +73,11 @@ wget https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/040/143/505/GCA_040143505.1_AS
 # Move and rename the ref genome
 
 mv GCA_040143505.1_ASM4014350v1_genomic.fna.gz data/fasta/M82_genomic.fna
-
 ```
 
-Download the corresponding gff and gbff files from the same ftp page from NCBI that I retrieved links to download the reference genome FASTA files
+Now, download the corresponding gff and gbff files from the same **ftp** links page on **NCBI** to download the reference genome FASTA files.
 
 ```bash
-
 # Make gbff and gff subdirectories
 
 mkdir -p data/gff
@@ -119,22 +115,13 @@ mv GCA_040143505.1_ASM4014350v1_genomic.gbff.gz data/gbff/M82_genomic.gbff.gz
 # Unzip gbff file 
 
 gunzip data/gbff/M82_genomic.gbff.gz
-
 ```
 
-1. Unzip reference genome files
-
-```bash
-gunzip -v data/
-
-```
-
-1. Set up files paths
+### Set up files paths
 
 ```bash
 #Inputs
 
-ref_heinz_2=data/fasta/Heinz1706.2_SL2.50_genomic.fna
 ref_heinz_3=data/fasta/Heinz1706.3_SL2.50_genomic.fna
 ref_heinz_4=data/fasta/Heinz1706_SL4.0_genomic.fna
 ref_m82=data/fasta/M82_genomic.fna 
@@ -151,24 +138,21 @@ m82_gbff=data/gbff/M82_genomic.gbff.gz
 # Output
 
 outdir=results/
-
 ```
 
 ## File Preparation:  Find the primer positions within each reference genome
 
-This script will locate the chromosome, type of strand (+/-), start position, and end position of an input primer set.  The inputs to this script include: reference genome (fasta), forward primer sequence, reverse primer sequence, and output directory. The output of this script is a 2 tsv files per reference genome that provides the location and the forward and reverse primers.
+This script will locate the chromosome, type of strand (+/-), start position, and end position of an input primer set.  The inputs to this script include: reference genomes, forward primer sequence, reverse primer sequence, and output directory. The output of this script is a 2 tsv files per reference genome that provides the location and the forward and reverse primers.
 
 ```bash
 for ref_genome in data/fasta/*.fna; do
-    #echo "# Running analysis on $ref_genome"
     sbatch scripts/primer_position.sh "$ref_genome" "$primer_seq_1" "$primer_seq_2" "$outdir"
 done
-
 ```
 
 ## File Preparation: Creating a fasta file that only contains one chromosome
 
-This script will accept both reference genome fasta files and an output directory as inputs and will output fasta files that only contain the chromosome that the inputed primers were located on
+This script will accept both reference genome fasta files and an output directory as inputs and will output fasta files that only contain the chromosome in which the primers were located.
 
 Before running the script, the names of the chromosome we are interested in must be saved as input variables
 
@@ -177,7 +161,6 @@ heinz_2_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.2_SL2.
 heinz_3_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706.3_SL2.50_genomic.fna_forward.tsv)
 heinz_4_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/Heinz1706_SL4.0_genomic.fna_forward.tsv)
 m82_chr_name=$(awk 'NR==2 {print $1}' results/primer_region/M82_genomic.fna_forward.tsv)
-
 ```
 
 Now I can run my desired script:
@@ -187,7 +170,7 @@ bash scripts/seqkit_chr.sh "$ref_heinz_2" "$ref_heinz_3" "$ref_heinz_4" "$ref_m8
 ```
 ## File Preparation: Extracting a gff3 file from a gbff file
 
-The purpose of this script is to extract a gff3 file from the gbff files
+The purpose of this script is to extract a gff3 file from the gbff files. The following code block will loop over each gbff file within the `gbff` subdirectory and output a gff3 file into the `gff3` subdirectory.
 
 ```bash
 for gbff_file in data/gbff/*; do
@@ -198,11 +181,7 @@ done
 
 ## File Preparation: Creating smaller gff
 
-This script will accept both the input and the output gff files, and output a trimmed gff that only contains the region of interest.
-
-```bash
-bash scripts/gff_trim.sh data/gff/genomic.gff data/gff/Heinz1706.3_trimmed.gff
-```
+This script will accept an input gff files and the name of its corresponding chromosome, and output a trimmed gff that only contains the chromosome of interest.
 
 ```bash
 bash scripts/gff_trim_chr.sh "$heinz_2_gff" "$heinz_3_chr_name"
@@ -213,26 +192,29 @@ bash scripts/gff_trim_chr.sh "$heinz_2_gff" "$heinz_3_chr_name"
 This script will convert my trimmed gff file to a gff3 file type.
 
 ```bash
-gff_chr3=data/gff/trimmed/Heinz_1706.3_SL2.50_genomic.gff_NC_015440.2.gff
-bash scripts/gff_to_gff3.sh "$gff_chr3"
+# Save the new trimmed gff file as a variable
 
+gff_chr3=data/gff/trimmed/Heinz_1706.3_SL2.50_genomic.gff_NC_015440.2.gff
+
+# Run the file conversion script
+
+bash scripts/gff_to_gff3.sh "$gff_chr3"
 ```
 
 
 ## File Preparation: FastQC
 
-This script will run FastQC on all three of my files within my fastq directory by looping over each file within the directory. Each file will represent a separate batch job.
+This script will run FastQC on all 4 of the FASTQ files within my `fastq` directory by looping over each file within the directory. Each file will be represented by a separate batch job.
 
 ```bash
 for fastq_file in data/fastq/*; do
-    #echo "# Running analysis on $fastq_file"
     sbatch scripts/fastqc.sh "$fastq_file" "$outdir"
 done
 ```
 
 ## Align Reads
 
-This scripts will take a corrected reference genome file and paired fastq reads as input, and align those reads to the reference genome. It will create BAM files as it's output. Before running the `align.sh` script, we will need to save the new corrected files under input variable names
+This scripts will take the single chromosome reference genome file and paired fastq reads as the input, and align those reads to the reference genome. It will create BAM files as it's output. Before running the `align.sh` script, we will need to save the new corrected files under input variable names
 
 I also will save our full chromosome fasta files as variables to align those sequences
 
@@ -240,7 +222,6 @@ I also will save our full chromosome fasta files as variables to align those seq
 You might not need the following code chunk
 
 ```bash
-heinz_2_chr_fasta=data/fasta/fasta_chromosome/Heinz1706.2_SL2.50_CM001066.2.fna
 heinz_3_chr_fasta=data/fasta/fasta_chromosome/Heinz1706.3_SL2.50_NC_015440.2.fna
 heinz_4_chr_fasta=data/fasta/fasta_chromosome/Heinz1706_SL4.0_CM001066.4.fna
 m82_chr_fasta=data/fasta/fasta_chromosome/M82_CM079137.1.fna
@@ -276,15 +257,33 @@ done
 sbatch scripts/multiqc.sh "$outdir"aligned/mapped+sorted "$outdir"
 ```
 
-## Call Variants and Filter for Deletions
+## Create VCF files for the EA03058 BAM files to import into JBrowse
 
 This script takes a reference genome, a mapped and sorted BAM file, and an output directory as inputs and will output two vcf files. On file will be filtered to only contain deletions, the other file will contain both insertions and deletions.
 
 ```bash
-heinz_ms_bam_2=results/aligned/Heinz1706.2_SL2.50_corrected.fna.mapped.sorted.bam
-heinz_ms_bam_3=results/aligned/Heinz1706.3_SL2.50_corrected.fna.mapped.sorted.bam
+# Save the trimmed reference genome files as variables
 
-bash scripts/call_and_filter.sh "$heinz_corrected_3" "$heinz_ms_bam_3" "$outdir"
+heinz_3_chr_fasta=data/fasta/fasta_chromosome/Heinz1706.3_SL2.50_NC_015440.2.fna
+heinz_4_chr_fasta=data/fasta/fasta_chromosome/Heinz1706_SL4.0_CM001066.4.fna
+m82_chr_fasta=data/fasta/fasta_chromosome/M82_CM079137.1.fna
 
+# Save the mapped and sorted BAM files as variables
+
+m82_EA_bam=results/aligned/mapped+sorted/M82_CM079137.1.fna.mapped.sorted.bam
+heinz_4_EA_bam=results/aligned/mapped+sorted/Heinz1706_SL4.0_CM001066.4.fna.mapped.sorted.bam
+heinz_2_EA_bam=results/aligned/mapped+sorted/Heinz1706.3_SL2.50_NC_015440.2.fna.mapped.sorted.bam
+
+# Run the vcf script on the Heinz 1706 SL2.50 files
+
+sbatch scripts/vcf.sh "$heinz_3_chr_fasta" "$heinz_2_EA_bam" "$outdir"
+
+# Run the vcf script on the Heinz 1706 SL4.0 files
+
+sbatch scripts/vcf.sh "$heinz_4_chr_fasta" "$heinz_4_EA_bam" "$outdir"
+
+# Run the vcf script on the M82 files
+
+sbatch scripts/vcf.sh "$m82_chr_fasta" "$m82_EA_bam" "$outdir"
 ```
 
