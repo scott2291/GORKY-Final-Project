@@ -36,6 +36,7 @@ echo
 # Create an ouput directory for your bam files
 
 mkdir -p "$outdir"aligned
+mkdir -p "$outdir"aligned/mapped+sorted
 mkdir -p "$outdir"aligned/logs
 
 # Create an index file for your reference genome
@@ -58,6 +59,10 @@ samtools sort --threads 8 "$outdir"aligned/"$file_name"_LA.mapped.bam -o "$outdi
 # Create an index for the BAM file
 
 samtools index "$outdir"aligned/"$file_name"_LA.mapped.sorted.bam
+
+# Move mapped and sorted BAM files to its own directory for MultiQC
+
+mv "$outdir"aligned/*mapped.sorted.bam "$outdir"aligned/mapped+sorted
 
 # Final Logging Statements
 
