@@ -299,3 +299,23 @@ sbatch scripts/vcf.sh "$heinz_4_chr_fasta" "$heinz_4_EA_bam" "$outdir"
 sbatch scripts/vcf.sh "$m82_chr_fasta" "$m82_EA_bam" "$outdir"
 ```
 
+## Alignment Comparison in JBrowse
+
+1. Use FileZilla to transfer the following files into your computer's files for each reference genome:
+    - Reference genome FASTA and FASTA index file
+    - Mapped and sorted BAM file for *EA03058* alignment and corresponding index file
+    - Mapped and sorted BAM file for *LA 1416* alignment and corresponding index file
+    - VCF file for *EA03058* alignment with corresponding index file
+    - Trimmed gff3 file and corresponding index (where available)
+1. Open JBrowse on local computer
+1. Click the **OPEN NEW GENOME** button under the **Launch new session** heading
+1. Add the FASTA file and the corresponding index under the appropriate sections
+1. Name the new assembly with the name and version of the reference genome with other identifying information such as the aligned genomes
+1. Click the **FILE** tab in the upper left hand corner and then click **Open track...**
+1. Add the *LA 1416* BAM file with its corresponding index file
+1. Open another track to add the *EA03058* BAM file and its corresponding index as an additional track
+1. Open another track to add the *EA03058* VCF file and its corresponding index
+Open a file track to add the GFF3 annotation file and its correpsonding index
+1. Look at the forward and reverse primer tsv file that corresponds to the currently opened reference genome under `results/primer_region`
+1. Bookmark the exact primer positions based on the start and end position provided for each primer
+1. Analyze the area found between these primers
