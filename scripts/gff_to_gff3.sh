@@ -8,7 +8,6 @@ module load htslib/1.20
 # Constants
 
 gffread=oras://community.wave.seqera.io/library/gffread:0.12.7--b08e770b84a4a126
-#genometools=oras://community.wave.seqera.io/library/genometools:1.2.1--0747616f409ea579
 
 # Input Variables
 
@@ -19,7 +18,7 @@ filename=$(basename "$input_gff")
 
 echo "# Starting script gff_to_gff3.sh"
 date
-echo "# Input file:                      $input_gff"
+echo "# Input file:                 $input_gff"
 echo 
 echo "# File basename:              $filename"
 

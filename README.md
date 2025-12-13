@@ -1,5 +1,17 @@
 # GORKY Final Project Protocol
 
+## Project Background 
+
+GORKY is a gene found in tomatoes that encodes a NPF (nitrate peptide family) transporter protein involved in the biosynthesis pathway of steroidal glycoalkaloids. The transporter is hypothesized to transport alpha-tomatine from the vacuole to the cytosol, where it is then converted to lycoperoside F/G/esculeoside A (FGA). This deletion spans the 612 bp and is located at the end of the last exon of the protein and the 3' UTR region. The presence of this deletion results in the loss of function pof the transporter protein. The LOF of the GORKY gene is thought to be responsible for the accumulation of alpha-tomatine in ripe tomatoes. 
+
+Our lab is interested in this gene because of the potential health benefits of alpha-tomatine. There has been several studies that have provided strong evidene for potential health benefits linked to alpha-tomatine consumption both in-vitro and in-vivo. In order to study the health benefits of alpha-tomatine consumption through whole fruit intervention, our lab has bred a high-alpha tomaine tomato. We believe that the mechanism in which our tomatoes accumulate high levels of alpha-tomaine is through the GORKY deletion, but we have not found this deletion in the high alpha tomatine tomatoes we study or the high alpha tomatine tomatoes with the Kazachkova et. al, 2021 paper. 
+
+ A previous PhD student aligned seven genomes, including some are expected to have the GORKY deletion, but did not find the deletion in any of them. 
+
+## Goal:
+
+For this project, I want to use the same genomic data used in Kazachkova et. al. to see if I can find the GORKY deletion in the location in which they reported it. To achieve this goal, I will gather the data directly from the resources linked in the paper.
+
 ## Setting up
 
 Prior to beginning this procedure, ensure that the working directory is set to `fp_gorky/`.

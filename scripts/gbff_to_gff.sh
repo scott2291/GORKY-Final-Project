@@ -12,7 +12,7 @@ filename=$(basename "$input_gbff")
 
 # Initial Logging
 
-echo "# Starting script gff_to_gff3.sh"
+echo "# Starting script gbff_to_gff.sh"
 date
 echo "# Input file:                      $input_gbff"
 echo 

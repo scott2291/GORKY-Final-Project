@@ -3,7 +3,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --time=12:00:00
 #SBATCH --mail-type=BEGIN,END,FAIL
-#SBATCH --output=slurm-align-%j.out
+#SBATCH --output=slurm-align-LA-%j.out
 set -euo pipefail
 
 # Load Modules

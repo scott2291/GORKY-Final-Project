@@ -6,7 +6,7 @@ sratools=oras://community.wave.seqera.io/library/sra-tools:3.2.1--846898724ee33c
 
 # Initial Logging
 
-echo "# Starting script call_and_filter.sh"
+echo "# Starting script sra-download.sh"
 date
 echo
 
